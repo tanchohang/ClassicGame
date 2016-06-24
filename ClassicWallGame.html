@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>ClassicGame</title>
+</head>
+<body onload="draw();">
+    <canvas id="myCanvas" width="600" height="600" style="border:1px solid red;">NOT SUPPORTED</canvas>
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        var x = canvas.width / 2;
+        var y = canvas.height / 2;
+        var dx = 2;
+        var dy = -4;
+        var radius = 10;
+
+        setInterval(draw, 10);
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBall();
+
+            if (y + dy < 0 + radius || y + dy > canvas.height - radius) {
+                dy = -dy;
+            }
+            if (x + dx < radius || x + dx > canvas.clientWidth - radius) {
+                dx = -dx;
+            }
+
+
+            x += dx;
+            y += dy;
+        }
+        function drawBall() {
+
+            ctx.beginPath();
+            ctx.arc(x,y, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = "red";
+            ctx.fill();
+
+        }
+
+    </script>
+</body>
+</html>
