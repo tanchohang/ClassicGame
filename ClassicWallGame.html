@@ -24,6 +24,25 @@
         var flagLeft=false;
         var flagRight=false;
         
+        
+        var brickHeight=20;
+        var brickWidth=100;
+        var brickPadding=10;
+        var brickX=0;
+        var brickY=0;
+        
+        /*var brick=[];
+        
+            for(i=0;i<3;i++){
+                brick[i]=[];
+                for(j=0;j<3;j++){
+                    //brick[i][j]={X:0,Y:0}
+                    
+                }
+            }*/
+            
+        
+        
          
         document.addEventListener("keydown",keydownHandler);
         document.addEventListener("keyup",keyupHandler);
@@ -47,16 +66,28 @@
                 flagRight=false;
             
         }
-
+        
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBricks();
             drawBall();
             paddle();
-
-            if (y + dy < 0 + radius || y + dy > canvas.height - radius) {
+            
+            
+            if (y + dy <  radius ) {
                 dy = -dy;
+            } else if(y+dy>canvas.height){
+                if( x>coordX && x<coordX+paddleWidth){
+                dy=-dy;
             }
-            if (x + dx < radius || x + dx > canvas.clientWidth - radius) {
+                else{
+                    alert("GAME OVER!!")
+                    window.location.reload();
+                }
+            }
+            
+            
+            if (x + dx < radius || x + dx > canvas.width - radius) {
                 dx = -dx;
             }
             
@@ -69,6 +100,26 @@
             y += dy;
             
             
+        }
+        
+        
+        
+
+        function drawBricks(){
+            for(i=0;i<3;i++){
+                for(j=0;j<5;j++){
+                    brickX=j*(brickWidth+brickPadding)+30;
+                    brickY=i*(brickHeight+brickPadding);
+                    
+                    //brick[i][j].X=brickX;
+                    //brick[i][j].Y=brickY;
+                    ctx.beginPath();
+                    ctx.fillStyle="brown";
+                    ctx.fillRect(brickX,brickY,brickWidth,brickHeight);
+                    ctx.closePath();
+                    
+                }
+            }
         }
         function drawBall() {
 
