@@ -5,7 +5,7 @@
     
     <title>ClassicGame</title>
 </head>
-<body onload="render();">
+<body onload="draw();">
     <canvas id="myCanvas" width="600" height="600" style="border:1px solid red;">NOT SUPPORTED</canvas>
     <script>
         var canvas = document.getElementById("myCanvas");
@@ -31,7 +31,7 @@
         var brickPadding=10;
         
         var score=0;
-        
+        var lives=3;
         
         var brick=[];
         
@@ -45,10 +45,16 @@
         
         
         
-         
+        document.addEventListener("mousemove",mouseControl);
         document.addEventListener("keydown",keydownHandler);
         document.addEventListener("keyup",keyupHandler);
             
+        function mouseControl(e){
+            var mouseX=e.clientX-canvas.offsetLeft;
+            if(mouseX>0&&mouseX<canvas.width){
+                coordX=mouseX-paddleWidth/2;
+            }
+        }
         function keydownHandler(e){
             if(e.keyCode==37){
                 flagLeft=true;
@@ -102,13 +108,24 @@
             
             if (y + dy <  radius ) {
                 dy = -dy;
-            } else if(y+dy>canvas.height){
+            } 
+            else if(y+dy>canvas.height){
                 if( x>coordX && x<coordX+paddleWidth)
                     dy=-dy;
             
                 else{
-                    
-                    gameOver();
+                     //lives--;
+                    //if(!lives){
+                       
+                        gameOver();
+                    /*}
+                    else{
+                        var x = canvas.width / 2;
+                        var y = canvas.height - 10;
+                        var dx = 3;
+                        var dy = -3;
+                        var coordX=canvas.width/2;
+                    }*/
                 }
             }
             
@@ -127,7 +144,7 @@
             
             
             
-            
+          requestAnimationFrame(draw);  
         }
         
         
@@ -182,10 +199,7 @@
             ctx.fill();
             ctx.closePath();
         }
-        function render(){
-            
-            setInterval(draw, 10);
-        }
+       
     </script>
 </body>
 </html>
