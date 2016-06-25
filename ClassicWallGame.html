@@ -5,7 +5,7 @@
     
     <title>ClassicGame</title>
 </head>
-<body onload="draw();">
+<body onload="render();">
     <canvas id="myCanvas" width="600" height="600" style="border:1px solid red;">NOT SUPPORTED</canvas>
     <script>
         var canvas = document.getElementById("myCanvas");
@@ -24,23 +24,23 @@
         var flagLeft=false;
         var flagRight=false;
         
-        
+        var row=3;
+        var column=5;
         var brickHeight=20;
         var brickWidth=100;
         var brickPadding=10;
-        var brickX=0;
-        var brickY=0;
         
-        /*var brick=[];
         
-            for(i=0;i<3;i++){
+        var brick=[];
+        
+            for(i=0;i<row;i++){
                 brick[i]=[];
-                for(j=0;j<3;j++){
-                    //brick[i][j]={X:0,Y:0}
+                for(j=0;j<column;j++){
+                    brick[i][j]={X:0,Y:0,status:1}
                     
                 }
-            }*/
-            
+            }
+        
         
         
          
@@ -66,12 +66,27 @@
                 flagRight=false;
             
         }
+         function collisionDetection(){
+            for(i=0;i<row;i++){
+                for(j=0;j<column;j++){
+                    var b=brick[i][j];
+                if(b.status == 1) {
+                    if(x > b.X && x < b.X+brickWidth && y > b.Y && y < b.y+brickHeight){
+                        dy = -dy;
+                        b.status = 0;
+                    }
+                }
+                }
+            }
+        }
         
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBricks();
             drawBall();
             paddle();
+            collisionDetection();
+            
             
             
             if (y + dy <  radius ) {
@@ -100,27 +115,31 @@
             y += dy;
             
             
+            
+            
         }
         
         
         
 
         function drawBricks(){
-            for(i=0;i<3;i++){
-                for(j=0;j<5;j++){
-                    brickX=j*(brickWidth+brickPadding)+30;
-                    brickY=i*(brickHeight+brickPadding);
-                    
-                    //brick[i][j].X=brickX;
-                    //brick[i][j].Y=brickY;
-                    ctx.beginPath();
-                    ctx.fillStyle="brown";
-                    ctx.fillRect(brickX,brickY,brickWidth,brickHeight);
-                    ctx.closePath();
-                    
+            for(i=0;i<row;i++){
+                for(j=0;j<column;j++){
+                    if(brick[i][j].status == 1) {
+                        var brickX=j*(brickWidth+brickPadding)+30;
+                        var brickY=i*(brickHeight+brickPadding)+30;
+
+                        brick[i][j].X=brickX;
+                        brick[i][j].Y=brickY;
+                        ctx.beginPath();
+                        ctx.fillStyle="brown";
+                        ctx.fillRect(brick[i][j].X,brick[i][j].Y,brickWidth,brickHeight);
+                        ctx.closePath();
+                    }
                 }
             }
         }
+       
         function drawBall() {
 
             ctx.beginPath();
@@ -140,8 +159,10 @@
             ctx.fill();
             ctx.closePath();
         }
-        
-        setInterval(draw, 10);
+        function render(){
+            
+            setInterval(draw, 10);
+        }
     </script>
 </body>
 </html>
