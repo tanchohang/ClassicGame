@@ -11,9 +11,9 @@
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
         var x = canvas.width / 2;
-        var y = canvas.height / 2;
+        var y = canvas.height - 10;
         var dx = 2;
-        var dy = -4;
+        var dy = -3;
         var radius = 10;
         
         var paddleHeight=10;
@@ -29,6 +29,8 @@
         var brickHeight=20;
         var brickWidth=100;
         var brickPadding=10;
+        
+        var score=0;
         
         
         var brick=[];
@@ -66,14 +68,22 @@
                 flagRight=false;
             
         }
-         function collisionDetection(){
+        function collisionDetection(){
             for(i=0;i<row;i++){
                 for(j=0;j<column;j++){
                     var b=brick[i][j];
                 if(b.status == 1) {
-                    if(x > b.X && x < b.X+brickWidth && y > b.Y && y < b.y+brickHeight){
+                    if(x-radius > b.X && x-radius < b.X+brickWidth && y-radius > b.Y && y-radius < b.Y+brickHeight){
                         dy = -dy;
                         b.status = 0;
+                        score++;
+                        
+                        if(score==row*column){
+                            alert("WINNER!!!!");
+                            window.location.reload();
+                        }
+                        
+                    
                     }
                 }
                 }
@@ -86,18 +96,19 @@
             drawBall();
             paddle();
             collisionDetection();
+            drawScore();
             
             
             
             if (y + dy <  radius ) {
                 dy = -dy;
             } else if(y+dy>canvas.height){
-                if( x>coordX && x<coordX+paddleWidth){
-                dy=-dy;
-            }
+                if( x>coordX && x<coordX+paddleWidth)
+                    dy=-dy;
+            
                 else{
-                    alert("GAME OVER!!")
-                    window.location.reload();
+                    
+                    gameOver();
                 }
             }
             
@@ -120,7 +131,19 @@
         }
         
         
-        
+        function gameOver(){
+            
+            
+            alert("GAME OVER!!");
+            alert("your score: "+score);
+            window.location.reload();
+          
+        }
+        function drawScore(){
+            ctx.font="16px Arial";
+            ctx.fillStyle="green";
+            ctx.fillText("Score:"+score,8,20);
+        }
 
         function drawBricks(){
             for(i=0;i<row;i++){
