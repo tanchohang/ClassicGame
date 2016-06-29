@@ -48,6 +48,7 @@
         document.addEventListener("mousemove",mouseControl);
         document.addEventListener("keydown",keydownHandler);
         document.addEventListener("keyup",keyupHandler);
+        document.addEventListener("touchstart", touchStart,false);
             
         function mouseControl(e){
             var mouseX=e.clientX-canvas.offsetLeft;
@@ -55,6 +56,15 @@
                 coordX=mouseX-paddleWidth/2;
             }
         }
+        
+        function touchStart(e){
+            //e.preventDefault();
+            //var whichArt=e.target;
+            //var touch = e.touches[0];
+            
+            
+        }
+        
         function keydownHandler(e){
             if(e.keyCode==37){
                 flagLeft=true;
